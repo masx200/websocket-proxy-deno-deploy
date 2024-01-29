@@ -14,7 +14,7 @@ export async function socks5_server_second(conn: Deno.Conn) {
     //Requests
     const [VER, CMD, RSV, ATYP] = await readBytesWithBYOBReader(
         conn.readable,
-        4,
+        4
     );
     //   o  CMD
     //          o  CONNECT X'01'
@@ -46,11 +46,11 @@ export async function socks5_server_second(conn: Deno.Conn) {
     const address = address_length
         ? await readBytesWithBYOBReader(conn.readable, address_length)
         : await readBytesWithBYOBReader(
-            conn.readable,
-            (
-                await readBytesWithBYOBReader(conn.readable, 1)
-            )[0],
-        );
+              conn.readable,
+              (
+                  await readBytesWithBYOBReader(conn.readable, 1)
+              )[0]
+          );
     const raw_address = address_length ? address : [address.length, ...address];
     const port = await readBytesWithBYOBReader(conn.readable, 2);
 
@@ -142,10 +142,9 @@ export async function socks5_server_second(conn: Deno.Conn) {
     // fields indicate the port number/address where the client MUST send
     // UDP request messages to be relayed.
 
-    if (VER === 0x05 && CMD === 0x01 && RSV === 0x00) {
-    } else {
+    if (!(VER === 0x05 && CMD === 0x01 && RSV === 0x00)) {
         await writer.write(
-            new Uint8Array([5, 7, 0, ATYP, ...raw_address, ...port]),
+            new Uint8Array([5, 7, 0, ATYP, ...raw_address, ...port])
         );
         conn.close();
         return;
