@@ -1,8 +1,9 @@
 export async function proxy_tcp_over_websocket(
     conn: Deno.Conn,
     address: string,
-    port: number
-): Promise<boolean> {
+    port: number,
+    callback: (established: boolean) => Promise<void>
+): Promise<void> {
     const ws = new WebSocketStream("ws://localhost:8000", {
         headers: {
             "x-Protocol": "Transmission Control",
@@ -13,7 +14,8 @@ export async function proxy_tcp_over_websocket(
     // console.log(ws);
     try {
         const webConn = await ws.opened; //.catch(console.error);
-
+        await callback(true);
+        // console.log(conn);
         // console.log(webConn);
         conn.readable.pipeTo(webConn.writable).catch(function (e) {
             try {
@@ -34,7 +36,6 @@ export async function proxy_tcp_over_websocket(
             }
             return console.error(e);
         });
-        return true;
     } catch (error) {
         console.error(error);
         try {
@@ -44,6 +45,6 @@ export async function proxy_tcp_over_websocket(
         } catch (e) {
             console.error(e);
         }
-        return false;
+        await callback(false);
     }
 }

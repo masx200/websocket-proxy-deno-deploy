@@ -145,6 +145,7 @@ export async function socks5_server_second(conn: Deno.Conn) {
 
     if (!(VER === 0x05 && CMD === 0x01 && RSV === 0x00)) {
         await writer.write(
+            /*   o  X'07' Command not supported */
             new Uint8Array([5, 7, 0, ATYP, ...raw_address, ...port])
         );
         conn.close();
@@ -156,16 +157,31 @@ export async function socks5_server_second(conn: Deno.Conn) {
     );
     if (!address_and_port) {
         await writer.write(
+            /*    o  X'08' Address type not supported */
             new Uint8Array([5, 8, 0, ATYP, ...raw_address, ...port])
         );
         conn.close();
         return;
     }
     writer.releaseLock();
-
     await proxy_tcp_over_websocket(
         conn,
         address_and_port.address,
-        address_and_port.port
+        address_and_port.port,
+        async (established) => {
+            const writer = conn.writable.getWriter();
+            if (!established) {
+                await writer.write(
+                    /*        o  X'05' Connection refused */
+                    new Uint8Array([5, 5, 0, ATYP, ...raw_address, ...port])
+                );
+            } else {
+                await writer.write(
+                    /*  o  X'00' succeeded */
+                    new Uint8Array([5, 0, 0, ATYP, ...raw_address, ...port])
+                );
+            }
+            writer.releaseLock();
+        }
     );
 }
