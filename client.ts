@@ -38,6 +38,7 @@ try {
                 try {
                     ws.close();
                     conn.close();
+                    await ws.closed;
                 } catch (e) {
                     console.error(e);
                 }
