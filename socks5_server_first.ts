@@ -1,5 +1,7 @@
 import { readBytesWithBYOBReader } from "./readBytesWithBYOBReader.ts";
-
+/**
+ *https://www.rfc-editor.org/rfc/rfc1928
+ */
 export async function socks5_server_first(conn: Deno.Conn) {
     const writer = conn.writable.getWriter();
     //Procedure for TCP-based clients
@@ -15,14 +17,10 @@ export async function socks5_server_first(conn: Deno.Conn) {
         await writer.write(new Uint8Array([5, 255]));
 
         conn.close();
-        return;
+        return false;
     }
 
-    //Requests
-    // const [VER, CMD, RSV, ATYP] = await readBytesWithBYOBReader(
-    //     conn.readable,
-    //     4
-    // );
     writer.releaseLock();
+    return true;
     // await proxy_tcp_over_websocket(conn);
 }
