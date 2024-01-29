@@ -1,11 +1,13 @@
 export async function proxy_tcp_over_websocket(
     conn: Deno.Conn,
+    address: string,
+    port: number
 ): Promise<boolean> {
     const ws = new WebSocketStream("ws://localhost:8000", {
         headers: {
             "x-Protocol": "Transmission Control",
-            "X-Destination-Address": "www.baidu.com",
-            "X-Destination-Port": "80",
+            "X-Destination-Address": address,
+            "X-Destination-Port": String(port),
         },
     });
     // console.log(ws);

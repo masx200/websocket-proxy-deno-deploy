@@ -1,4 +1,5 @@
 import { proxy_tcp_over_websocket } from "./proxy_tcp_over_websocket.ts";
+import { readAddress } from "./readAddress.ts";
 import { readBytesWithBYOBReader } from "./readBytesWithBYOBReader.ts";
 
 /**
@@ -149,6 +150,22 @@ export async function socks5_server_second(conn: Deno.Conn) {
         conn.close();
         return;
     }
+    const address_and_port = readAddress(
+        ATYP,
+        new Uint8Array([...raw_address, ...port])
+    );
+    if (!address_and_port) {
+        await writer.write(
+            new Uint8Array([5, 8, 0, ATYP, ...raw_address, ...port])
+        );
+        conn.close();
+        return;
+    }
     writer.releaseLock();
-    await proxy_tcp_over_websocket(conn);
+
+    await proxy_tcp_over_websocket(
+        conn,
+        address_and_port.address,
+        address_and_port.port
+    );
 }
