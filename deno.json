@@ -1,0 +1,16 @@
+{
+    "tasks": {
+        "fmt": "deno fmt --config deno.json",
+
+        "lint": "deno lint --config deno.json",
+        "server": "deno run --unstable -A ./main.ts",
+        "client": "deno run --unstable -A ./client.ts"
+    },
+    "importMap": "import_map.json",
+    "fmt": {
+        "options": {
+            "indentWidth": 4,
+            "singleQuote": false
+        }
+    }
+}
