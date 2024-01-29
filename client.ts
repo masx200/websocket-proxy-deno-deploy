@@ -3,10 +3,10 @@ const listener = Deno.listen({ port: 9000, transport: "tcp" });
 try {
     for await (const conn of listener) {
         (async () => {
-            const ws = new WebSocketStream("ws://loca99999999999lhost:8000", {
+            const ws = new WebSocketStream("ws://localhost:8000", {
                 headers: {
                     "x-Protocol": "Transmission Control",
-                    "X-Destination-Address": "www.ba99999999999idu.com",
+                    "X-Destination-Address": "www.baidu.com",
                     "X-Destination-Port": "80",
                 },
             });
