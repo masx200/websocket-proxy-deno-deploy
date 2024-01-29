@@ -5,7 +5,10 @@ export async function socks5_server(conn: Deno.Conn) {
     const writer = conn.writable.getWriter();
     const VER = (await readBytesWithBYOBReader(conn.readable, 1))[0];
     const NMETHODS = (await readBytesWithBYOBReader(conn.readable, 1))[0];
-    const METHODS = await readBytesWithBYOBReader(conn.readable, NMETHODS);
+    const METHODS: Uint8Array = await readBytesWithBYOBReader(
+        conn.readable,
+        NMETHODS
+    );
     if (VER === 0x05 && [...METHODS].includes(0x00)) {
         await writer.write(new Uint8Array([0x05, 0x0]));
     } else {
