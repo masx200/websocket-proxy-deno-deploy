@@ -1,5 +1,6 @@
 import { formatIPv4 } from "./formatIPv4.ts";
 import { formatIPv6 } from "./formatIPv6.ts";
+import { readUInt16BE } from "./readUInt16BE.ts";
 
 /**
 Returns an object with three properties designed to look like the address
@@ -27,7 +28,7 @@ export function readAddress(
         return {
             family: "IPv4",
             address: formatIPv4(buffer),
-            port: buffer.readUInt16BE(4),
+            port: readUInt16BE(buffer, 4),
         };
     } else if (type == 3) {
         // Domain name
@@ -35,14 +36,14 @@ export function readAddress(
         return {
             family: "domain",
             address: buffer.slice(1, length + 1).toString(),
-            port: buffer.readUInt16BE(length + 1),
+            port: readUInt16BE(buffer, length + 1),
         };
     } else if (type == 4) {
         // IPv6 address
         return {
             family: "IPv6",
             address: formatIPv6(buffer),
-            port: buffer.readUInt16BE(16),
+            port: readUInt16BE(buffer, 16),
         };
     }
 }
