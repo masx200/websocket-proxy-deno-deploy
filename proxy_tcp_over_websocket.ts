@@ -1,5 +1,5 @@
 export async function proxy_tcp_over_websocket(
-    conn: Deno.Conn
+    conn: Deno.Conn,
 ): Promise<boolean> {
     const ws = new WebSocketStream("ws://localhost:8000", {
         headers: {

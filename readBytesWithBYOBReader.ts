@@ -1,6 +1,6 @@
 export async function readBytesWithBYOBReader(
     stream: ReadableStream,
-    numBytes: number
+    numBytes: number,
 ): Promise<Uint8Array> {
     const reader = stream.getReader({ mode: "byob" });
     let receivedBytes = 0;

@@ -15,13 +15,13 @@ formatted according to the SOCKS5 specification.
 */
 export function readAddress(
     type: number,
-    buffer: Uint8Array
+    buffer: Uint8Array,
 ):
     | {
-          family: string;
-          address: string;
-          port: number;
-      }
+        family: string;
+        address: string;
+        port: number;
+    }
     | undefined {
     if (type == 1) {
         // IPv4 address
