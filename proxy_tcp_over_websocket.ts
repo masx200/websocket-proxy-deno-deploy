@@ -1,10 +1,12 @@
+import { get_websocket_proxy_url } from "./get_websocket_proxy_url.ts";
+
 export async function proxy_tcp_over_websocket(
     conn: Deno.Conn,
     address: string,
     port: number,
-    callback: (established: boolean) => Promise<void>
+    callback: (established: boolean) => Promise<void>,
 ): Promise<void> {
-    const ws = new WebSocketStream("ws://localhost:8000", {
+    const ws = new WebSocketStream(get_websocket_proxy_url(), {
         headers: {
             "x-Protocol": "Transmission Control",
             "X-Destination-Address": address,

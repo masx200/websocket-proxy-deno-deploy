@@ -1,6 +1,10 @@
+import { get_proxy_client_port } from "./get_proxy_client_port.ts";
 import { socks5_server } from "./socks5_server.ts";
 
-const listener = Deno.listen({ port: 9000, transport: "tcp" });
+const listener = Deno.listen({
+    port: get_proxy_client_port(),
+    transport: "tcp",
+});
 
 try {
     for await (const conn of listener) {

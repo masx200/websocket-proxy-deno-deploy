@@ -15,7 +15,7 @@ export async function socks5_server_second(conn: Deno.Conn) {
     //Requests
     const [VER, CMD, RSV, ATYP] = await readBytesWithBYOBReader(
         conn.readable,
-        4
+        4,
     );
     //   o  CMD
     //          o  CONNECT X'01'
@@ -47,11 +47,11 @@ export async function socks5_server_second(conn: Deno.Conn) {
     const address = address_length
         ? await readBytesWithBYOBReader(conn.readable, address_length)
         : await readBytesWithBYOBReader(
-              conn.readable,
-              (
-                  await readBytesWithBYOBReader(conn.readable, 1)
-              )[0]
-          );
+            conn.readable,
+            (
+                await readBytesWithBYOBReader(conn.readable, 1)
+            )[0],
+        );
     const raw_address = address_length ? address : [address.length, ...address];
     const port = await readBytesWithBYOBReader(conn.readable, 2);
 
@@ -146,19 +146,19 @@ export async function socks5_server_second(conn: Deno.Conn) {
     if (!(VER === 0x05 && CMD === 0x01 && RSV === 0x00)) {
         await writer.write(
             /*   o  X'07' Command not supported */
-            new Uint8Array([5, 7, 0, ATYP, ...raw_address, ...port])
+            new Uint8Array([5, 7, 0, ATYP, ...raw_address, ...port]),
         );
         conn.close();
         return;
     }
     const address_and_port = readAddress(
         ATYP,
-        new Uint8Array([...raw_address, ...port])
+        new Uint8Array([...raw_address, ...port]),
     );
     if (!address_and_port) {
         await writer.write(
             /*    o  X'08' Address type not supported */
-            new Uint8Array([5, 8, 0, ATYP, ...raw_address, ...port])
+            new Uint8Array([5, 8, 0, ATYP, ...raw_address, ...port]),
         );
         conn.close();
         return;
@@ -179,15 +179,15 @@ export async function socks5_server_second(conn: Deno.Conn) {
             if (!established) {
                 await writer.write(
                     /*        o  X'05' Connection refused */
-                    new Uint8Array([5, 5, 0, ATYP, ...raw_address, ...port])
+                    new Uint8Array([5, 5, 0, ATYP, ...raw_address, ...port]),
                 );
             } else {
                 await writer.write(
                     /*  o  X'00' succeeded */
-                    new Uint8Array([5, 0, 0, ATYP, ...raw_address, ...port])
+                    new Uint8Array([5, 0, 0, ATYP, ...raw_address, ...port]),
                 );
             }
             writer.releaseLock();
-        }
+        },
     );
 }
