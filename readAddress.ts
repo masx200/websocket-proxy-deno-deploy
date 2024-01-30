@@ -15,13 +15,13 @@ formatted according to the SOCKS5 specification.
 */
 export function readAddress(
     type: number,
-    buffer: Uint8Array,
+    buffer: Uint8Array
 ):
     | {
-        family: string;
-        address: string;
-        port: number;
-    }
+          family: string;
+          address: string;
+          port: number;
+      }
     | undefined {
     if (type == 1) {
         // IPv4 address
@@ -35,7 +35,10 @@ export function readAddress(
         const length = buffer[0];
         return {
             family: "domain",
-            address: buffer.slice(1, length + 1).toString(),
+            address: new TextDecoder()
+                .decode(buffer.slice(1, length + 1))
+                .toString(),
+            // address: buffer.slice(1, length + 1).toString(),
             port: readUInt16BE(buffer, length + 1),
         };
     } else if (type == 4) {

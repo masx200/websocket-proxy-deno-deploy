@@ -20,6 +20,7 @@ Deno.serve({ port: 8000 }, async (request): Promise<Response> => {
         Destination_Address &&
         Destination_Port
     ) {
+        console.log({ Protocol, Destination_Address, Destination_Port });
         try {
             const tcp = await Deno.connect({
                 port: Number(Destination_Port),

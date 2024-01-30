@@ -164,6 +164,12 @@ export async function socks5_server_second(conn: Deno.Conn) {
         return;
     }
     writer.releaseLock();
+    // console.log(address_and_port);
+    console.log({
+        address: address_and_port.address,
+        port: address_and_port.port,
+        cmd: "connect",
+    });
     await proxy_tcp_over_websocket(
         conn,
         address_and_port.address,
