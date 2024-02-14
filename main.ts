@@ -21,7 +21,7 @@ Deno.serve(
         const Destination_Port = request.headers.get("X-Destination-Port");
         const Protocol = request.headers.get("x-Protocol");
         if (
-            "Transmission Control" === Protocol &&
+            "CONNECT" === Protocol &&
             Destination_Address &&
             Destination_Port
         ) {
