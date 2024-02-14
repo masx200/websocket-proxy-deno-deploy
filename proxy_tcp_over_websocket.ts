@@ -8,7 +8,7 @@ export async function proxy_tcp_over_websocket(
 ): Promise<void> {
     const ws = new WebSocketStream(get_websocket_proxy_url(), {
         headers: {
-            "x-Protocol": "Transmission Control",
+            "x-Protocol": "CONNECT",
             "X-Destination-Address": address,
             "X-Destination-Port": String(port),
         },
