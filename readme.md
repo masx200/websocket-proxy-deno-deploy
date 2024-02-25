@@ -16,3 +16,16 @@ deno task server
 ```
 deno task client
 ```
+
+```json
+{
+////服务端websocket的url链接
+    "websocket_proxy_url": "ws://localhost:8000",
+//服务端websocket的监听端口
+    "proxy_server_port": 8000,
+//本地socks服务器的端口
+    "proxy_client_port": 9000,
+//本地socks服务器的地址
+    "proxy_client_hostname": "0.0.0.0"
+}
+```
