@@ -12,7 +12,15 @@ export class WebSocketStream {
                     return controller.enqueue(new Uint8Array(data));
                 };
                 socket.onerror = (e) => controller.error(e);
-                socket.onclose = (/* e */) => controller.close(/* e */);
+                socket.onclose = (e) => {
+                    console.log("socket closed", e);
+                    // return controller.close(/* e */)}
+                    try {
+                        controller.close(); /* e */
+                    } catch (error) {
+                        console.error(error);
+                    }
+                };
             },
             cancel(/* reason */) {
                 socket.close();
