@@ -1,4 +1,6 @@
-websocket-proxy-deno-deploy
+# websocket-proxy-deno-deploy
+
+支持基本身份验证,用户名和密码
 
 启动服务端,在 websocket 协议上传输 tcp 代理数据,启动 websocket 服务端
 
