@@ -2,5 +2,7 @@
     "websocket_proxy_url": "ws://localhost:8000",
     "proxy_server_port": 8000,
     "proxy_client_port": 9000,
-    "proxy_client_hostname": "0.0.0.0"
+    "proxy_client_hostname": "0.0.0.0",
+    "server_username": "hello",
+    "server_password": "world"
 }
