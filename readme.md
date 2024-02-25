@@ -29,3 +29,5 @@ deno task client
     "proxy_client_hostname": "0.0.0.0"
 }
 ```
+
+也可以使用websocket-proxy-client-socks-node作为客户端
