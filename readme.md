@@ -35,3 +35,5 @@ deno task client
 ```
 
 也可以使用 websocket-proxy-client-socks-node 作为客户端
+
+也可以使用 websocket-proxy-deno-client-socks 作为客户端
